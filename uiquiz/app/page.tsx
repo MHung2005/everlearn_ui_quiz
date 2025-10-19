@@ -138,14 +138,28 @@ export default function Home() {
   }, [flag])
 
   useEffect(() => {
+    if (checkSub === true) {
+      localStorage.setItem('quiz-sub', JSON.stringify(checkSub))
+    }
+  })
+
+  useEffect(() => {
     const savedAns = localStorage.getItem('quiz-ans');
     const savedFlag = localStorage.getItem('quiz-flag');
+    const savedItem = localStorage.getItem('quiz-sub');
     if (savedAns != null) {
       //console.log(savedAns);
       setAnswered(JSON.parse(savedAns));
     }
     if (savedFlag != null) {
       setFlag(JSON.parse(savedFlag));
+    }
+    if (savedItem !== null) {
+      const temp = JSON.parse(savedItem)
+      if (temp === true) {
+        setCheckSub(temp)
+      }
+
     }
   }, []);
 
@@ -227,6 +241,7 @@ export default function Home() {
                   answer={mySet.answer}
                   onAnswer={(value) => handleAnswer(index, value)}
                   select = {answered[index]}
+                  submitted = {checkSub}
                 />
                 {checkSub && (
                   <ul>

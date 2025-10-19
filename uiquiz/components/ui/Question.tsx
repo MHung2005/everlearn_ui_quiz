@@ -9,7 +9,7 @@ export type MyQuestion = {
   answer: string;
 };
 
-export default function Question({ question, options, explanation, answer, onAnswer, select}: MyQuestion & { onAnswer: (value: string) => void } & {select : string | null}) {
+export default function Question({ question, options, explanation, answer, onAnswer, select, submitted}: MyQuestion & { onAnswer: (value: string) => void } & {select : string | null} & {submitted : boolean}) {
   return (
     <div>
       <form action="">
@@ -24,6 +24,7 @@ export default function Question({ question, options, explanation, answer, onAns
               onChange={() => {
                 onAnswer(option);
               }}
+              disabled = {submitted}
             />
             <Label style={{ margin : "5px"}}>{option}</Label>
           </div>
