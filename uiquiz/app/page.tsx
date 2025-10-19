@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Question from '@/components/ui/Question';
 import QuesInfo from '@/components/ui/QuesInfo';
 import { Button } from '@/components/ui/button';
@@ -123,6 +123,32 @@ export default function Home() {
   const [answered, setAnswered] = useState(Array(data.quiz.length).fill(null));
   const [flag, setFlag] = useState<boolean[]>(Array(data.quiz.length).fill(false));
 
+  useEffect(() => {
+    const allNull = answered.every(item => item === null);
+    if (allNull === false) {
+      localStorage.setItem('quiz-ans', JSON.stringify(answered));
+    }
+  }, [answered]);
+
+  useEffect(() => {
+    const allNull = flag.every(item => item === false);
+    if (allNull === false) {
+      localStorage.setItem('quiz-flag', JSON.stringify(flag));
+    }
+  }, [flag])
+
+  useEffect(() => {
+    const savedAns = localStorage.getItem('quiz-ans');
+    const savedFlag = localStorage.getItem('quiz-flag');
+    if (savedAns != null) {
+      //console.log(savedAns);
+      setAnswered(JSON.parse(savedAns));
+    }
+    if (savedFlag != null) {
+      setFlag(JSON.parse(savedFlag));
+    }
+  }, []);
+
   const handleAnswer = (index: number, value: string) => {
     const newAnswer = [...answered];
     newAnswer[index] = value;
@@ -200,6 +226,7 @@ export default function Home() {
                   explanation={mySet.explanation}
                   answer={mySet.answer}
                   onAnswer={(value) => handleAnswer(index, value)}
+                  select = {answered[index]}
                 />
                 {checkSub && (
                   <ul>

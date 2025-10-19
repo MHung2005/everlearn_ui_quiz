@@ -9,7 +9,7 @@ export type MyQuestion = {
   answer: string;
 };
 
-export default function Question({ question, options, explanation, answer, onAnswer}: MyQuestion & { onAnswer: (value: string) => void }) {
+export default function Question({ question, options, explanation, answer, onAnswer, select}: MyQuestion & { onAnswer: (value: string) => void } & {select : string | null}) {
   return (
     <div>
       <form action="">
@@ -20,6 +20,7 @@ export default function Question({ question, options, explanation, answer, onAns
               type="radio"
               value={option}
               name={question}
+              checked = {select === option}
               onChange={() => {
                 onAnswer(option);
               }}
